@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Умный подбор техники | Voltix</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-page="advisor">
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="logo" href="index.html">Volt<span>ix</span></a>
+      <nav aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="products.html">Catalog</a>
+        <a href="advisor.html" aria-current="page">Advisor</a>
+        <a href="cart.html">Cart <span class="pill" data-count="cart">0</span></a>
+      </nav>
+      <button id="themeBtn" class="icon-btn" aria-label="Switch light or dark theme">🌙</button>
+    </div>
+  </header>
+
+  <main class="wrap block">
+    <div class="advisor-header">
+      <p class="eyebrow">Алгоритм подбора</p>
+      <h1>Советник по выбору техники</h1>
+      <p class="lead">Ответьте на 4 простых вопроса, и алгоритм подберёт топ-3 оптимальных модели с подробным объяснением преимуществ.</p>
+    </div>
+
+    <div class="advisor-card">
+      <!-- Прогресс-бар -->
+      <div class="advisor-progress-wrap" aria-label="Прогресс заполнения формы">
+        <div class="advisor-steps-labels">
+          <span class="step-label active" data-step="1">1. Устройство</span>
+          <span class="step-label" data-step="2">2. Бюджет</span>
+          <span class="step-label" data-step="3">3. Задача</span>
+          <span class="step-label" data-step="4">4. Приоритет</span>
+        </div>
+        <div class="advisor-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" id="progressTrack">
+          <div id="progressBar" class="advisor-progress-bar" style="width: 25%;"></div>
+        </div>
+      </div>
+
+      <!-- Форма шагов -->
+      <form id="advisorForm" onsubmit="return false;">
+        <!-- Шаг 1: Категория -->
+        <div class="advisor-step active" id="step1">
+          <h2 id="step1-title">Шаг 1: Что вы ищете?</h2>
+          <p class="muted">Выберите тип устройства для персонального подбора</p>
+          <div class="choice-grid" role="group" aria-labelledby="step1-title">
+            <button type="button" class="choice-btn selected" data-value="laptops" aria-pressed="true">
+              <span class="choice-icon">💻</span>
+              <strong>Ноутбук</strong>
+              <small>Для работы, учебы, кода или игр</small>
+            </button>
+            <button type="button" class="choice-btn" data-value="smartphones" aria-pressed="false">
+              <span class="choice-icon">📱</span>
+              <strong>Смартфон</strong>
+              <small>Для связи, фото, приложений и медиа</small>
+            </button>
+            <button type="button" class="choice-btn" data-value="tablets" aria-pressed="false">
+              <span class="choice-icon">📲</span>
+              <strong>Планшет</strong>
+              <small>Для чтения, заметок, видео и мобильной работы</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Шаг 2: Бюджет -->
+        <div class="advisor-step" id="step2">
+          <h2 id="step2-title">Шаг 2: Какой у вас бюджет?</h2>
+          <p class="muted">Укажите максимальную комфортную сумму в долларах ($)</p>
+          
+          <div id="budgetChips" class="range-chips" role="group" aria-labelledby="step2-title">
+            <!-- Динамически заполняется в зависимости от категории -->
+          </div>
+
+          <div class="budget-input-group">
+            <label for="budgetInput">Либо введите точную сумму ($):</label>
+            <div class="budget-input-wrapper">
+              <span class="currency-symbol">$</span>
+              <input type="number" id="budgetInput" min="50" max="10000" step="50" value="1500" required aria-label="Максимальный бюджет в долларах">
+            </div>
+            <div id="budgetHint" class="muted" style="margin-top: .4rem; font-size: .85rem;"></div>
+          </div>
+        </div>
+
+        <!-- Шаг 3: Основная задача -->
+        <div class="advisor-step" id="step3">
+          <h2 id="step3-title">Шаг 3: Главная задача устройства</h2>
+          <p class="muted">Под какой ключевой сценарий вы выбираете модель?</p>
+          <div id="useCaseGrid" class="choice-grid mini" role="group" aria-labelledby="step3-title">
+            <!-- Динамически заполняется -->
+          </div>
+        </div>
+
+        <!-- Шаг 4: Приоритет характеристик -->
+        <div class="advisor-step" id="step4">
+          <h2 id="step4-title">Шаг 4: Главный приоритет</h2>
+          <p class="muted">На какую характеристику обратить особое внимание?</p>
+          <div id="priorityGrid" class="choice-grid mini" role="group" aria-labelledby="step4-title">
+            <!-- Динамически заполняется -->
+          </div>
+        </div>
+
+        <!-- Кнопки управления -->
+        <div class="advisor-controls">
+          <button type="button" id="prevBtn" class="btn" style="display: none;">← Назад</button>
+          <button type="button" id="nextBtn" class="btn primary">Далее →</button>
+          <button type="button" id="submitBtn" class="btn primary" style="display: none;">Подобрать устройства 🚀</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Блок результатов -->
+    <section id="resultsSection" class="advisor-results-section" style="display: none;" tabindex="-1" aria-labelledby="resultsHeading">
+      <div class="results-header">
+        <h2 id="resultsHeading">Рекомендованные устройства</h2>
+        <p class="muted">Топ-3 модели, наилучшим образом соответствующие вашим критериям</p>
+      </div>
+      <div id="advisorResults" class="grid" aria-live="polite"></div>
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button type="button" id="restartBtn" class="btn">↺ Пройти подбор заново</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Voltix, © <span id="year"></span>. Технологический магазин электроники с интеграцией PostgreSQL и умным подбором техники.</div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal" aria-label="Product details"></dialog>
+</body>
+</html>
